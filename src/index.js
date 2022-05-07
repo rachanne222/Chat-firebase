@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import LogIn from './components/LogIn';
 import Chats from './components/Chats'
 import Header from './components/Header';
+import index from './index.css'
 import {
 	BrowserRouter as Router,
 	Routes,
@@ -17,7 +17,7 @@ import {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
-		{/* <Header></Header> */}
+		 {/* <Header></Header>  */}
 		<Router>
 		<div>
 		
