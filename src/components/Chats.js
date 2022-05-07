@@ -14,14 +14,13 @@ function Chats() {
   //let [username, setUsername] = React.useState([]);
   let ob = [];
   const location = useLocation();
-  const username= location.state.login
+  const username = location.state.login;
 
   if (x) {
     if (!location) {
       return <div> Not logged in </div>;
     }
-  
-    
+
     let firebase2DBRef = myFirebase.getFirebaseRef();
     firebase2DBRef.once("value").then((snapshot) => {
       console.log(snapshot.val());
@@ -29,19 +28,18 @@ function Chats() {
       console.log(ob);
       for (let key in ob.posts) {
         console.log(key);
-          //const noUsername = ob[key].username.replace(/\s/g, "");
-          if (username===ob.posts[key].username) {
-            console.log("try");
-            messages.push({
-              id: key,
-              username: ob.posts[key].username,
-              time: ob.posts[key].time,
-              message: ob.posts[key].message,
-            });
-            console.log(ob.posts[key].message);
-            setMessages(messages);
-            console.log(messages);
-
+        //const noUsername = ob[key].username.replace(/\s/g, "");
+        if (username === ob.posts[key].username) {
+          console.log("try");
+          messages.push({
+            id: key,
+            username: ob.posts[key].username,
+            time: ob.posts[key].time,
+            message: ob.posts[key].message,
+          });
+          console.log(ob.posts[key].message);
+          setMessages(messages);
+          console.log(messages);
         }
       }
 
@@ -49,7 +47,7 @@ function Chats() {
     });
   }
   console.log(messages);
-  
+
   let messageElements = messages.map((chat) => (
     <div>
       <Chat
@@ -62,7 +60,6 @@ function Chats() {
     </div>
   ));
   console.log(messageElements);
-  
 
   function handleSubmit() {
     console.log("submitted");
@@ -75,39 +72,33 @@ function Chats() {
       time: Date(),
       key: counter,
     };
-    
-    
-  const db = getDatabase();
-    
-  // A post entry=newMessageObject.
-  
 
-  // Get a key for a new Post.
- const newPostKey = push(child(ref(db), 'posts')).key;
- console.log(newPostKey)
- console.log(newMessageObject)
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  const updates = {};
-  updates['/posts/' + newPostKey] = newMessageObject;
-  
-  
-  setcounter(counter+1)
-  console.log(updates)
-  update(ref(db), updates);
-  messages.push(newMessageObject);
-  console.log(messages)
- 
+    const db = getDatabase();
 
+    // A post entry=newMessageObject.
+
+    // Get a key for a new Post.
+    const newPostKey = push(child(ref(db), "posts")).key;
+    console.log(newPostKey);
+    console.log(newMessageObject);
+    // Write the new post's data simultaneously in the posts list and the user's post list.
+    const updates = {};
+    updates["/posts/" + newPostKey] = newMessageObject;
+
+    setcounter(counter + 1);
+    console.log(updates);
+    update(ref(db), updates);
+    messages.push(newMessageObject);
+    console.log(messages);
   }
 
   return (
     <>
-    {messageElements}
+      <h1>Welcome {username}</h1>
+      {messageElements}
       <form>
         <div className="form-group">
-          <label htmlFor="exampleFormControlTextarea1">
-            Write your Review:{" "}
-          </label>
+          <label htmlFor="exampleFormControlTextarea1">Message: </label>
           <textarea
             ref={messageInput}
             className="form-control"
@@ -116,7 +107,7 @@ function Chats() {
           />
         </div>
       </form>
-      <button onClick={handleSubmit}>Submit Review </button>
+      <button onClick={handleSubmit}>Enter </button>
     </>
   );
 }
