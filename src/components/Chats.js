@@ -4,13 +4,15 @@ import { useLocation } from "react-router-dom";
 import Chat from "./Chat";
 import React from "react";
 import { getDatabase, ref, set, child, push, update } from "firebase/database";
+import {v4 as uuidv4} from 'uuid';
+import  '../css/chats.css';
 
 function Chats() {
   const location = useLocation();
   let messageInput = React.useRef();
   let [messages, setMessages] = React.useState([]);
   let [messageElements, setMessageSet] = React.useState(0);
-  //let [username, setUsername] = React.useState([]);
+  
   let ob = [];
   
   const username = location.state.login;
@@ -27,12 +29,15 @@ function Chats() {
   if (!location) {
     return <div> Not logged in </div>;
   }
+
+
   function handleSubmit() {
     console.log("submitted");
 
     let message = messageInput.current.value;
     let time = new Date();
     let newMessageObject = {
+      id: uuidv4(),
       username: username,
       message: message,
       time: Date(),
@@ -54,10 +59,12 @@ function Chats() {
     
     console.log(updates);
     update(ref(db), updates);
-    messages.push(newMessageObject);
+    let newMessages = [...messages, newMessageObject];
+    setMessages(newMessages);
+    messageInput.current.value="";
     
   }
-  function load(){
+  //function load(){
   let firebase2DBRef = myFirebase.getFirebaseRef();
   firebase2DBRef.once("value").then((snapshot) => {
     //console.log(snapshot.val());
@@ -92,35 +99,34 @@ function Chats() {
     </div>
   ));
 
-  }
+ // }
  
-  if (!messageElements) {
-    console.log(messageElements)
-    load()
+  // if (messageElements==undefined) {
+  //   console.log(messageElements)
+  //   //load()
     
 
-    return <button onClick={load}>Nothing</button>;
-  } else {
+  //   return <button onClick={load}>Nothing</button>;
+  // } else {
     return (
       <>
-        <h1>Welcome {username}</h1>
-        
-        <form>
-          <div className="form-group">
-            <label htmlFor="exampleFormControlTextarea1">Message: </label>
-            <textarea
-              ref={messageInput}
-              className="form-control"
-              id="exampleFormControlTextarea1"
-              rows="3"
-            />
+      <h1>Welcome {username} 
+      </h1>
+      <img id="icon" src="https://wallpaperaccess.com/full/4922409.jpg" alt="icon" ></img>
+      <div>{messageElements}</div>
+      <div className="chat-message clearfix">
+      <div className="input-group mb-0">
+          <div className="input-group-prepend">
+              <span className="input-group-text"><i class="fa fa-send"></i></span>
           </div>
-        </form>
-        <button onClick={handleSubmit}>Enter </button>
-        {messageElements}
+          <input type="text" ref={messageInput} class="form-control" placeholder="Enter text here..."/>                                    
+      </div>
+      </div>
+      <button onClick={handleSubmit}>Enter </button>
       </>
     );
   }
-}
+// }
 
 export default Chats;
+

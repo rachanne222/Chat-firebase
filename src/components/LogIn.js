@@ -10,6 +10,8 @@ import bootstrap from 'bootstrap'
 
 function Login() {
   let nameInput = React.useRef();
+  let email= React.useRef();
+  let passwordInput = React.useRef();
   let navigate = useNavigate();
   function login() {
     let user = nameInput.current.value;
@@ -26,18 +28,26 @@ function Login() {
  
 
  
-    return (
-      <form>
-        <label htmlFor="fname">Username:</label>
-        <br />
-        <input type="text" ref={nameInput} id="user" name="user" />
-        <br />
-        <label htmlFor="lname">Password:</label>
-        <br />
-        <input type="text" id="password" name="password" />
-        <input type="button" onClick={login} value="Click Me!" />
-      </form>
-    );
-  
+  return (
+    <form>
+      <label htmlFor="fname">Username:</label>
+      <br />
+      <input type="text" ref={nameInput} id="user" name="user" />
+      <br />
+      <label htmlFor="fname">email Address</label>
+      <br />
+      <input type="text" ref={email} id="email" name="user" />
+      <br />
+      <label htmlFor="lname" ref={passwordInput}>
+        Password:
+      </label>
+      <br />
+      <input type="text" id="password" name="password" />
+      <br />
+      <br />
+      <input type="button" onClick={login} value="Login!" />
+    </form>
+  );
+
 }
 export default Login;
