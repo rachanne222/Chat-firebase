@@ -15,7 +15,7 @@ function Chat(props) {
                                 {props.username}</div>
                             <div id="bubble-message" className="message-data-time"> {props.message} </div>
            </div>
-           <button onClick={handleDelete}> Delete Post</button>
+           <button onClick={handleDelete} className="deletebutton"> Delete Post</button>
       <span class="icon icon-calendar"></span>
     </>            
             

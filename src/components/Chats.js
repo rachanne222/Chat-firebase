@@ -122,7 +122,7 @@ function Chats() {
           <input type="text" ref={messageInput} class="form-control" placeholder="Enter text here..."/>                                    
       </div>
       </div>
-      <button onClick={handleSubmit}>Enter </button>
+      <button onClick={handleSubmit} className="button">Enter </button>
       </>
     );
   }
