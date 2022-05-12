@@ -16,6 +16,7 @@ function Chats() {
   let ob = [];
   
   const username = location.state.login;
+  const userId= location.state.auth;
 
   function deleteChat(id) {
     let updates={}
@@ -30,26 +31,28 @@ function Chats() {
     return <div> Not logged in </div>;
   }
 
-
+  const db = getDatabase();
   function handleSubmit() {
     console.log("submitted");
-
+    const db = getDatabase();
+    const newPostKey = push(child(ref(db), "posts")).key;
     let message = messageInput.current.value;
     let time = new Date();
     let newMessageObject = {
-      id: uuidv4(),
+      userId:location.state.auth,
+      id: newPostKey,
       username: username,
       message: message,
       time: Date(),
       
     };
 
-    const db = getDatabase();
+    
 
     // A post entry=newMessageObject.
 
     // Get a key for a new Post.
-    const newPostKey = push(child(ref(db), "posts")).key;
+    
     console.log(newPostKey);
     console.log(newMessageObject);
     // Write the new post's data simultaneously in the posts list and the user's post list.
@@ -73,7 +76,7 @@ function Chats() {
     messages=[]
     for (let key in ob.posts) {
       console.log( ob.posts );
-      if (username === ob.posts[key].username && messages[ob.posts[key]]===undefined) {
+      if (userId === ob.posts[key].userId && messages[ob.posts[key]]===undefined) {
         
         messages.push({
           id: key,
