@@ -4,20 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import '../css/chats.css';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import 'firebase/compat/firestore';
-import { initializeApp } from 'firebase/app';import { useState } from "react";
-import {
-	getFirestore,
-	// query,
-	// getDocs,
-
-	// where,
-	addDoc
-} from 'firebase/firestore';
-//import { config } from "process";
 
 //const app = initializeApp(myFirebase.app);
 const auth = getAuth(MyFirebase.app);
-const db = getFirestore(MyFirebase.app);
 
 function Login(props) {
 	let nameInput = React.useRef();
@@ -28,7 +17,6 @@ function Login(props) {
 		logInWithEmailAndPassword();
 	}
 
-	
 	const registerWithEmailAndPassword = async () => {
 		console.log(auth);
 		await createUserWithEmailAndPassword(auth, email.current.value, password.current.value);
@@ -36,8 +24,17 @@ function Login(props) {
 		logInWithEmailAndPassword(email, password).catch((error) => {
 			const errorCode = error.code;
 			const errorMessage = error.message;
-			alert('Invalid email address or password Username must be 6 characters');
-			login();
+			alert({errorMessage });
+
+			var answer = window.confirm( {errorMessage}+ "  " +
+ 				'Invalid email address or password Username must be 6 characters.  Reset password?'
+			);
+			console.log(errorCode + ' ' + errorMessage);
+			// if (answer) {
+			// 	sendPasswordReset();
+			// } else {
+				login();
+			// }
 		});
 	};
 
@@ -46,18 +43,18 @@ function Login(props) {
 			.then((userCredential) => {
 				// Signed in
 				alert('Signed in');
-				const user = userCredential.user;
+				//const user = userCredential.user;
 				login();
 			})
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
-				var answer = window.confirm('Invalid email address or password do you need to register for Chat');
+				var answer = window.confirm({errorMessage} + " "+'Invalid email address or password do you need to register for Chat');
+				console.log(errorCode + ' ' + errorMessage);
 				if (answer) {
 					registerWithEmailAndPassword();
-				} else {
-					logInWithEmailAndPassword();
-				}
+				} 
+				
 			});
 	};
 	/**
@@ -84,7 +81,7 @@ function Login(props) {
 				var errorMessage = error.message;
 				if (errorCode === 'auth/invalid-email') {
 					alert(errorMessage);
-				} else if (errorCode == 'auth/user-not-found') {
+				} else if (errorCode === 'auth/user-not-found') {
 					alert(errorMessage);
 				}
 				console.log(error);
@@ -111,8 +108,11 @@ function Login(props) {
 			});
 		}
 	}
-	if (props.loginState===3){logout()
-
+	if (props.loginState === 3) {
+		logout();
+	}
+	if (props.loginState === 4) {
+		sendPasswordReset();
 	}
 	return (
 		<div logout>
