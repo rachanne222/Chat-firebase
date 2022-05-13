@@ -1,17 +1,17 @@
 import myFirebase from "../utility/MyFirebase";
-//import { useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Chat from "./Chat";
 import React from "react";
-import { getDatabase, ref, set, child, push, update } from "firebase/database";
-import {v4 as uuidv4} from 'uuid';
+import { getDatabase, ref, child, push, update } from "firebase/database";
 import  '../css/chats.css';
 
-function Chats() {
+
+function Chats(props) {
   const location = useLocation();
   let messageInput = React.useRef();
   let [messages, setMessages] = React.useState([]);
-  let [messageElements, setMessageSet] = React.useState(0);
+  let messageElements;
   
   let ob = [];
   
@@ -95,6 +95,7 @@ function Chats() {
   //console.log(messages);
 
   messageElements = messages.map((chat) => (
+    
     <div>
       <Chat  username= {chat.username}
       message={chat.message}
@@ -102,30 +103,24 @@ function Chats() {
     </div>
   ));
 
- // }
  
-  // if (messageElements==undefined) {
-  //   console.log(messageElements)
-  //   //load()
-    
-
-  //   return <button onClick={load}>Nothing</button>;
-  // } else {
     return (
       <>
       <h1>Welcome {username} 
       </h1>
-      <img id="icon" src="https://wallpaperaccess.com/full/4922409.jpg" alt="icon" ></img>
+      
+      
       <div>{messageElements}</div>
-      <div className="chat-message clearfix">
-      <div className="input-group mb-0">
-          <div className="input-group-prepend">
-              <span className="input-group-text"><i class="fa fa-send"></i></span>
-          </div>
+        <div className="chat-message clearfix">
+        <div className="input-group mb-0">
           <input type="text" ref={messageInput} class="form-control" placeholder="Enter text here..."/>                                    
-      </div>
+        </div>
       </div>
       <button onClick={handleSubmit} className="button">Enter </button>
+      <footer>
+      <img id="icon" src="https://wallpaperaccess.com/full/4922409.jpg" alt="icon" ></img>
+     
+      </footer>
       </>
     );
   }

@@ -2,16 +2,9 @@ import React from 'react';
 import MyFirebase from '../utility/MyFirebase';
 import { useNavigate } from 'react-router-dom';
 import '../css/chats.css';
-import {
-	getAuth,
-	createUserWithEmailAndPassword,
-	sendPasswordResetEmail,
-	onAuthStateChanged,
-	signInWithEmailAndPassword,
-	signOut
-} from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import 'firebase/compat/firestore';
-import { initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';import { useState } from "react";
 import {
 	getFirestore,
 	// query,
@@ -26,7 +19,7 @@ import {
 const auth = getAuth(MyFirebase.app);
 const db = getFirestore(MyFirebase.app);
 
-function Login() {
+function Login(props) {
 	let nameInput = React.useRef();
 	let email = React.useRef();
 	let password = React.useRef();
@@ -35,14 +28,15 @@ function Login() {
 		logInWithEmailAndPassword();
 	}
 
+	
 	const registerWithEmailAndPassword = async () => {
 		console.log(auth);
 		await createUserWithEmailAndPassword(auth, email.current.value, password.current.value);
 		sendEmailVerification();
 		logInWithEmailAndPassword(email, password).catch((error) => {
 			const errorCode = error.code;
-      const errorMessage = error.message;
-      alert('Invalid email address or password Username must be 6 characters');
+			const errorMessage = error.message;
+			alert('Invalid email address or password Username must be 6 characters');
 			login();
 		});
 	};
@@ -88,7 +82,7 @@ function Login() {
 				// Handle Errors here.
 				var errorCode = error.code;
 				var errorMessage = error.message;
-				if (errorCode == 'auth/invalid-email') {
+				if (errorCode === 'auth/invalid-email') {
 					alert(errorMessage);
 				} else if (errorCode == 'auth/user-not-found') {
 					alert(errorMessage);
@@ -117,9 +111,11 @@ function Login() {
 			});
 		}
 	}
+	if (props.loginState===3){logout()
 
+	}
 	return (
-		<div>
+		<div logout>
 			<label htmlFor="fname">Username:</label>
 			<br />
 			<input type="text" ref={nameInput} id="user" name="user" />
@@ -132,7 +128,8 @@ function Login() {
 			<br />
 			<input type="text" ref={password} id="password" name="password" />
 			<br />
-			<input type="button" className="button" onClick={logInOrRegister} value="Login or register" />
+			<br />
+			<input type="button" className="button" onClick={logInOrRegister} value="Login/Register" />
 			<br />
 		</div>
 	);
